@@ -398,7 +398,111 @@ model_history = model.fit(X_train, y_train,
 ```
 model_history.history
 ```
+```
+model_history.params
+```
+9. Plot Model Matrics:
+```
+from matplotlib import pyplot as plt
 
+loss = history_a.history['loss']
+val_loss = history_a.history['val_loss']
+epochs = range(1, len(loss) + 1)
+plt.plot(epochs, loss, 'y', label="Training Loss")
+plt.plot(epochs, val_loss, 'r', label="Validation Loss")
+plt.title("Training Vs Validation Loss")
+plt.xlabel("Epochs")
+plt.ylabel("Loss")
+plt.legend()
+plt.show()
+```
+```
+jaccard_coef = history_a.history['jaccard_coef']
+val_jaccard_coef = history_a.history['val_jaccard_coef']
 
+epochs = range(1, len(jaccard_coef) + 1)
+plt.plot(epochs, jaccard_coef, 'y', label="Training IoU")
+plt.plot(epochs, val_jaccard_coef, 'r', label="Validation IoU")
+plt.title("Training Vs Validation IoU")
+plt.xlabel("Epochs")
+plt.ylabel("Loss")
+plt.legend()
+plt.show()
+```
+10. Sving the Model and It's Traing History:
+```
+model.save(f"{dataset_root}{dataset_folder}/satellite_segmentation_full.h5")
+```
+```
+import json
 
+with open(f'{dataset_root}{dataset_folder}/history.json', 'w') as f:
+    json.dump(model_history.history, f)
+```
+11. Visualize Model Architecture with Keras
+```
+!apt-get update && apt-get install -y graphviz
+!pip install pydot
+```
+```
+from tensorflow.keras.utils import plot_model
+
+plot_model(
+    model,
+    to_file=f'{dataset_root}{dataset_folder}/satellite_model_architecture.png',
+    show_shapes=True,
+    show_layer_names=True,
+    dpi=100
+)
+```
 ![Model Architecture](images/satellite_model_architecture.png)
+
+## Model Testing
+> to test on the remaining 15% test data follow the below steps:
+```
+y_pred = model.predict(X_test)
+y_pred
+```
+Choose Max Probabilities on 3D/3 axis:
+```
+y_pred_argmax = np.argmax(y_pred, axis=3)
+```
+Plot 3 image side by side for comparisions:
+> Choose max values from the test dataset [flatten the dataset to 3 axis from 6 axis]
+```
+y_test_argmax = np.argmax(y_test, axis=3)
+
+test_image_number = random.randint(0, len(X_test))
+
+test_image = X_test[test_image_number]
+ground_truth_image = y_test_argmax[test_image_number]
+
+test_image_input = np.expand_dims(test_image, 0)
+
+prediction = model.predict(test_image_input)
+predicted_image = np.argmax(prediction, axis=3)
+predicted_image = predicted_image[0,:,:]
+```
+```
+plt.figure(figsize=(14,8))
+plt.subplot(231)
+plt.title("Original Image")
+plt.imshow(test_image)
+plt.subplot(232)
+plt.title("Original Masked image")
+plt.imshow(ground_truth_image)
+plt.subplot(233)
+plt.title("Predicted Image")
+plt.imshow(predicted_image)
+```
+![Compare Predictions](images/Compare_Predictions.png)
+
+## Conclutions:
+Based on your training curves, model architecture, and the visual comparison between ground truth and prediction, here are some concise conclusions;
+
+1. Strong Learning and Convergence:
+   > Training accuracy steadily climbs from ~0.55 up to ~0.92, while training loss falls from ≈1.00 to ≈0.88.
+   > Similarly, Jaccard (IoU) on the training set improves from ~0.26 to ~0.82 over 100 epochs.
+   > This indicates the network is successfully fitting the data and learning feature representations across its encoder–decoder (“U”) structure.
+2. Good Generalization:
+   *. Validation accuracy rises from ~0.63 to ~0.86, and validation Jaccard from ~0.35 to ~0.73
