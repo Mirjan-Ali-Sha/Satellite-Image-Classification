@@ -60,7 +60,7 @@ Tiles are saved like below;
 ```
 
 ### Preparing Dataset
-At first I upload all datasets to my Google Drive to smooth file management irrespective of run-time environments (CPU/GPU/Reconnect). The dataset/images are not in consistant size (hieght * width) and also few image size are very big as well. So, I decide to create Patches of 256 * 256 to reduce Memory consumption during training and for that I use `patchify` and I use `sklearn.preprocessing.MinMaxScaler` to Re-Scale only image values (for better accuracy) to 0-1 floating point (it can create more varities). You can see those codes inside the Pyhon Notebook but here I attached those codes as well;
+At first I upload all datasets to my Google Drive to smooth file management irrespective of run-time environments (CPU/GPU/Reconnect). The dataset/images are not in consistant size (hieght * width) and also few image size are very big as well. So, I decide to create Patches of 256 * 256 to reduce Memory consumption during training and for that I use `patchify` and I use `sklearn.preprocessing.MinMaxScaler` to Re-Scale only image values (for better accuracy) to 0-1 floating point (it can create more varities). You can see those codes inside the Pyhon Notebook but here I attached those codes for references;
 ```
 from google.colab import drive
 drive.mount('/content/drive')
@@ -498,11 +498,24 @@ plt.imshow(predicted_image)
 ![Compare Predictions](images/Compare_Predictions.png)
 
 ## Conclutions:
-Based on your training curves, model architecture, and the visual comparison between ground truth and prediction, here are some concise conclusions;
+Based on my training curves, model architecture, and the visual comparison between ground truth and prediction, here are some concise conclusions;
 
 1. Strong Learning and Convergence:
-   > Training accuracy steadily climbs from ~0.55 up to ~0.92, while training loss falls from ≈1.00 to ≈0.88.
-   > Similarly, Jaccard (IoU) on the training set improves from ~0.26 to ~0.82 over 100 epochs.
+   > Training accuracy steadily climbs from ~0.55 up to ~0.92, while training loss falls from ≈1.00 to ≈0.88.<br>
+   > Similarly, Jaccard (IoU) on the training set improves from ~0.26 to ~0.82 over 100 epochs.<br>
    > This indicates the network is successfully fitting the data and learning feature representations across its encoder–decoder (“U”) structure.
 2. Good Generalization:
-   *. Validation accuracy rises from ~0.63 to ~0.86, and validation Jaccard from ~0.35 to ~0.73
+   > Validation accuracy rises from ~0.63 to ~0.86, and validation Jaccard from ~0.35 to ~0.73.<br>
+   > Validation loss decreases in tandem (from ≈0.99 down to ≈0.92), with no marked divergence or plateauing early.<br>
+   > The stable gap between train and val curves suggests limited over‑fitting—my combination of Dice + Focal loss, dropout, and data augmentation appears effective.
+3. High Pixel‑Wise Overlap:
+   > By the end of training, per‑pixel IoU (Jaccard) on held‑out data exceeds 0.72, meaning on average over 72% of each region’s area is correctly overlapped.<br>
+   > This is strong performance for a 5‑class segmentation on high‑resolution aerial imagery.
+4. Qualitative Agreement:
+   > In the example patch, the predicted mask closely matches the ground truth, capturing fine road edges and small structures (compare middle vs right panels).
+   > No glaring systematic errors (e.g. roads mislabeled as vegetation) were visible in that sample.
+5. Architecture Suitability:
+   > My 5‑level U‑Net (with 16→32→64→128→256 filters) provides enough capacity to learn multi‑scale features without over‑parameterizing.<br>
+   > The skip‑connections effectively preserve spatial detail as seen in crisp boundaries in the prediction image.
+My lightweight U‑Net—with combined Dice + Focal loss and appropriate regularization—achieves both high quantitative metrics (val Jaccard > 0.72, accuracy > 0.85) and qualitatively accurate masks on unseen test patches, demonstrating its effectiveness for multi‑class semantic segmentation of aerial imagery.
+   
