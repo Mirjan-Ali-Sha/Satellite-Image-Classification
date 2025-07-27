@@ -60,4 +60,4 @@ Tiles are saved like below;
 ```
 
 ### Preparing Dataset
-The dataset/images are not in consistant size (hieght * width) and also few image size are very big as well. So, I decide to create Patches of 256 * 256 to reduce Memory consumption during training and for that I use `patchify` and 
+At first I upload all datasets to my Google Drive to smooth file management irrespective of run-time environments (CPU/GPU/Reconnect). The dataset/images are not in consistant size (hieght * width) and also few image size are very big as well. So, I decide to create Patches of 256 * 256 to reduce Memory consumption during training and for that I use `patchify` and 
