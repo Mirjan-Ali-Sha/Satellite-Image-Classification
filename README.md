@@ -518,5 +518,5 @@ Based on my training curves, model architecture, and the visual comparison betwe
    > My 5‑level U‑Net (with 16→32→64→128→256 filters) provides enough capacity to learn multi‑scale features without over‑parameterizing.<br>
    > The skip‑connections effectively preserve spatial detail as seen in crisp boundaries in the prediction image.
 My lightweight U‑Net—with combined Dice + Focal loss and appropriate regularization—achieves both high quantitative metrics (val Jaccard > 0.72, accuracy > 0.85) and qualitatively accurate masks on unseen test patches, demonstrating its effectiveness for multi‑class semantic segmentation of aerial imagery.<br>
-> You can download model and it's metadata from [model_data folder](
+> You can download model and it's metadata from [model_data folder](https://github.com/Mirjan-Ali-Sha/Satellite-Image-Classification/tree/main/model_data)
    
