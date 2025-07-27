@@ -6,7 +6,7 @@
 
 1. [Dataset](README.md#dataset)
 2. [Model Building](README.md#model-building)
-3. [Model Results](README.md#model-results)
+3. [Model Testing](README.md#model-testing)
 4. [Conclutions](README.md#conclutions)
 
 
