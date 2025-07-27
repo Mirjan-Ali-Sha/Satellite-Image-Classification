@@ -287,7 +287,7 @@ from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, UpSampling2D, C
 from tensorflow.keras.layers import concatenate, BatchNormalization, Dropout, Lambda
 ```
 3. Define U-Net Model:
-> Here I reduced the few parameters respectively (16 → 32 → 64 → 128 → 256 5 Level filters) to ensure memory consumption not going too much...
+> Here I reduced the few parameters respectively (16 → 32 → 64 → 128 → 256 5 Level filters) to ensure memory consumption not going too high...
 ```
 def multi_unet_model(n_classes=5, image_height=256, image_width=256, image_channels=1):
 
