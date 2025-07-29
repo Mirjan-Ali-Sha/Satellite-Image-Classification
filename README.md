@@ -525,7 +525,7 @@ My lightweight U‑Net—with combined Dice + Focal loss and appropriate reg
 ## Further Improvements:
 1. **More data sources:** Add other sensors (e.g. Sentinel‑1, Landsat) or extra layers (elevation, land‑cover) to boost accuracy. Also increasing datasets can help the model to fit with more possibilities 
 2. **Stronger augmentations:** Try band‑specific noise, spectral shifts, elastic distortions to make the model more robust.
-3. **New architectures:** Test modern backbones (EfficientNet, Swin Transformer) or segmentation heads (DeepLabV3+) for better performance.
+3. **New architectures:** Test modern backbones (EfficientNet, Swin Transformer) or build an ensemble of architectures (eg. U-Net, DeepLabV3+) for better performance and reduce variance. 
 4. **Increase Training Epochs:** For my limitations on Colab GPU I only train the model for 100 epochs.
 5. **Auto‑tuning:** Use tools like Optuna or Keras Tuner to find optimal learning rates, batch sizes, and weight decay.
 6. **Richer metrics:** Track per‑class precision/recall and IoU, and inspect confusion matrices to catch biases.
